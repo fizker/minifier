@@ -12,6 +12,13 @@ describe('unit/css.parser.js', function() {
 		fakes.restore()
 	})
 
+	describe('When parsing an import', function() {
+		it('should take the current path into consideration', function() {
+			fs.readFileSync.withArgs('a/b').returns('@import url(c);')
+			parser.parse('a/b')
+			expect(fs.readFileSync).to.have.been.calledWith('a/c')
+		})
+	})
 	describe('When parsing a file with different imports', function() {
 		var result
 		it('should work with strings with single quotes', function() {
