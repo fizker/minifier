@@ -5,6 +5,7 @@ var program = require('commander')
   , path = require('path')
   , sqwish = require('sqwish')
   , uglify = require('uglify-js')
+  , stripUTF8ByteOrder = require('./src/utils').stripUTF8ByteOrder
 
   , input
   , output
@@ -49,17 +50,10 @@ function js(input, output) {
 }
 
 function css(input, output) {
-	var max = fs.readFileSync(input, 'utf8')
+	var parser = require('./src/css')
+	  , max = parser.parse(input)
 	  , max = stripUTF8ByteOrder(max)
 	  , min = sqwish.minify(max, false)
 
 	fs.writeFileSync(output, min)
 }
-
-function stripUTF8ByteOrder(data) {
-	var content = data.toString();
-	if(content[0] === '\uFEFF') {
-		content = content.substring(1);
-	}
-	return content;
-};
