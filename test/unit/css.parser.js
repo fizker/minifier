@@ -12,6 +12,19 @@ describe('unit/css.parser.js', function() {
 		fakes.restore()
 	})
 
+	describe('When providing a root path', function() {
+		it('should fix urls according to the base path', function() {
+			fs.readFileSync.withArgs('a/b').returns('a{background: url(c);}')
+			var result = parser.parse('a/b', 'a')
+			expect(result).to.equal('a{background: url(c);}')
+		})
+		it('should fix imported urls according to the base path', function() {
+			fs.readFileSync.withArgs('a/b').returns('@import url(c);')
+			fs.readFileSync.withArgs('a/c').returns('a{background: url(d);}')
+			var result = parser.parse('a/b', 'a')
+			expect(result).to.equal('a{background: url(d);}')
+		})
+	})
 	describe('When parsing an import', function() {
 		it('should take the current path into consideration', function() {
 			fs.readFileSync.withArgs('a/b').returns('@import url(c);')
@@ -22,6 +35,12 @@ describe('unit/css.parser.js', function() {
 			fs.readFileSync.withArgs('a/b').returns('a{background: url(c);}')
 			var result = parser.parse('a/b')
 			expect(result).to.equal('a{background: url(a/c);}')
+		})
+		it('should apply the path through imports', function() {
+			fs.readFileSync.withArgs('a').returns('@import url(b/c);')
+			fs.readFileSync.withArgs('b/c').returns('a{background:url(d);')
+			var result = parser.parse('a')
+			expect(result).to.equal('a{background:url(b/d);')
 		})
 	})
 	describe('When parsing a file with different imports', function() {
