@@ -24,6 +24,18 @@ describe('unit/css.parser.js', function() {
 			var result = parser.parse('a/b', 'a')
 			expect(result).to.equal('a{background: url(d);}')
 		})
+		it('should work with absolute base paths', function() {
+			fs.readFileSync.withArgs('/a/file').returns('@import url(b/file);')
+			fs.readFileSync.withArgs('/a/b/file').returns('a{background: url(c/file);}')
+			var result = parser.parse('/a/file', '/a')
+			expect(result).to.equal('a{background: url(b/c/file);}')
+		})
+		it('should work with deeper nested base paths', function() {
+			fs.readFileSync.withArgs('/a/b/file').returns('@import url(c/file);')
+			fs.readFileSync.withArgs('/a/b/c/file').returns('a{background: url(d/file);}')
+			var result = parser.parse('/a/b/file', '/a')
+			expect(result).to.equal('a{background: url(b/c/d/file);}')
+		})
 	})
 	describe('When parsing an import', function() {
 		it('should take the current path into consideration', function() {

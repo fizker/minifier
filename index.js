@@ -9,6 +9,8 @@ var program = require('commander')
 
   , input
   , output
+  , inDir
+  , outDir
 
 program
 	.version('0.1.0')
@@ -22,6 +24,7 @@ if(!input) {
 	program.parse(['bla', 'bla', '--help'])
 	process.exit()
 }
+inDir = path.dirname(input)
 
 if(!/\.(js|css)$/.test(input)) {
 	console.log('Please reference a file with the extension .js or .css. You referenced <%s>', input)
@@ -29,6 +32,7 @@ if(!/\.(js|css)$/.test(input)) {
 }
 
 output = program.output || input.replace(/\.(css|js)$/, '.min.$1')
+outDir = path.dirname(output)
 
 if(/\.js$/.test(input)) {
 	js(input, output)
@@ -51,7 +55,8 @@ function js(input, output) {
 
 function css(input, output) {
 	var parser = require('./src/css')
-	  , max = parser.parse(input)
+	  , root = path.join(inDir, path.relative(inDir, outDir))
+	  , max = parser.parse(input, root)
 	  , max = stripUTF8ByteOrder(max)
 	  , min = sqwish.minify(max, false)
 

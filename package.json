@@ -10,7 +10,7 @@
   , "commander": "1.0.0"
   }
 , "scripts":
-  { "test": "mocha"
+  { "test": "node runAllTests"
   }
 , "devDependencies":
   { "mocha": "1.4.0"
