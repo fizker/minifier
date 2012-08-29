@@ -36,6 +36,16 @@ describe('unit/css.parser.js', function() {
 			var result = parser.parse('/a/b/file', '/a')
 			expect(result).to.equal('a{background: url(b/c/d/file);}')
 		})
+		it('should not change absolute import urls', function() {
+			fs.readFileSync.withArgs('/a/b').returns('@import url(/absolute/path);')
+			parser.parse('/a/b', '/a')
+			expect(fs.readFileSync).to.have.been.calledWith('/absolute/path')
+		})
+		it('should not change other absolute urls', function() {
+			fs.readFileSync.withArgs('/a/b').returns('a{background:url(/absolute/path);}')
+			var result = parser.parse('/a/b', '/a')
+			expect(result).to.equal('a{background:url(/absolute/path);}')
+		})
 	})
 	describe('When parsing an import', function() {
 		it('should take the current path into consideration', function() {

@@ -9,6 +9,7 @@ var fs = require('fs')
   , stringImportMatcher = /@import ["'](.+)["'];/g
   , importMatcher = /@import (url\()?([^()]+)\)?;/g
   , urlMatcher = /url\(["']?([^"'()]+)["']?\)/g
+  , absoluteUrl = /^([a-zA-Z]:\/)?\//
 
 function parse(file, absRoot) {
 	var root = path.dirname(file)
@@ -20,10 +21,16 @@ function parse(file, absRoot) {
 			return format('@import url(%s);', url)
 		})
 		.replace(urlMatcher, function(match, url) {
-			return format('url(%s)', path.join(relRoot, url))
+			if(!url.match(absoluteUrl)) {
+				url = path.join(relRoot, url)
+			}
+			return format('url(%s)', url)
 		})
 		.replace(importMatcher, function(match, junk, file) {
-			var parsedFile = parse(path.join(absRoot, file), absRoot)
+			if(!file.match(absoluteUrl)) {
+				file = path.join(absRoot, file)
+			}
+			var parsedFile = parse(file, absRoot)
 			return parsedFile
 		})
 }
