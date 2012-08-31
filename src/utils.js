@@ -12,10 +12,7 @@ function generateOutputName(input, inputContent, outputTemplate) {
 	extractedInput.md5 = generate.bind(null, 'md5')
 	extractedInput.sha = generate.bind(null, 'sha256')
 
-	if(outputTemplate) {
-		return hogan.compile(outputTemplate).render(extractedInput)
-	}
-	return format('%s.min.%s', extractedInput.filename, extractedInput.ext)
+	return hogan.compile(outputTemplate || '{{filename}}.min.{{ext}}').render(extractedInput)
 
 	function generate(algorithm) {
 		var digester = digest(algorithm)
