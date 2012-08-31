@@ -13,7 +13,7 @@ var program = require('commander')
   , outDir
 
 program
-	.version('0.1.0')
+	.version('0.2.0')
 	.option('-o, --output [file]', 'The output file')
 	.usage('[--output file] path/to/input')
 	.parse(process.argv)
