@@ -5,9 +5,12 @@ var program = require('commander')
   , path = require('path')
   , sqwish = require('sqwish')
   , uglify = require('uglify-js')
+  , stripUTF8ByteOrder = require('./src/utils').stripUTF8ByteOrder
 
   , input
   , output
+  , inDir
+  , outDir
 
 program
 	.version('0.1.0')
@@ -21,6 +24,7 @@ if(!input) {
 	program.parse(['bla', 'bla', '--help'])
 	process.exit()
 }
+inDir = path.dirname(input)
 
 if(!/\.(js|css)$/.test(input)) {
 	console.log('Please reference a file with the extension .js or .css. You referenced <%s>', input)
@@ -28,6 +32,7 @@ if(!/\.(js|css)$/.test(input)) {
 }
 
 output = program.output || input.replace(/\.(css|js)$/, '.min.$1')
+outDir = path.dirname(output)
 
 if(/\.js$/.test(input)) {
 	js(input, output)
@@ -49,17 +54,11 @@ function js(input, output) {
 }
 
 function css(input, output) {
-	var max = fs.readFileSync(input, 'utf8')
+	var parser = require('./src/css')
+	  , root = path.join(inDir, path.relative(inDir, outDir))
+	  , max = parser.parse(input, root)
 	  , max = stripUTF8ByteOrder(max)
 	  , min = sqwish.minify(max, false)
 
 	fs.writeFileSync(output, min)
 }
-
-function stripUTF8ByteOrder(data) {
-	var content = data.toString();
-	if(content[0] === '\uFEFF') {
-		content = content.substring(1);
-	}
-	return content;
-};
