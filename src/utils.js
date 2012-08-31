@@ -1,11 +1,33 @@
 module.exports =
 	{ stripUTF8ByteOrder: stripUTF8ByteOrder
+	, generateOutputName: generateOutputName
 	}
 
-function stripUTF8ByteOrder(data) {
-	var content = data.toString();
-	if(content[0] === '\uFEFF') {
-		content = content.substring(1);
+var format = require('util').format
+  , hogan = require('hogan.js')
+  , digest = require('crypto').createHash
+
+function generateOutputName(input, inputContent, outputTemplate) {
+	var extractedInput = JSON.parse(input.replace(/^(.*)\.([^.]+)$/, '{"ext":"$2","filename":"$1"}'))
+	extractedInput.md5 = generate.bind(null, 'md5')
+	extractedInput.sha = generate.bind(null, 'sha256')
+
+	if(outputTemplate) {
+		return hogan.compile(outputTemplate).render(extractedInput)
 	}
-	return content;
-};
+	return format('%s.min.%s', extractedInput.filename, extractedInput.ext)
+
+	function generate(algorithm) {
+		var digester = digest(algorithm)
+		digester.update(inputContent, 'utf8')
+		return digester.digest('hex')
+	}
+}
+
+function stripUTF8ByteOrder(data) {
+	var content = data.toString()
+	if(content[0] === '\uFEFF') {
+		content = content.substring(1)
+	}
+	return content
+}
