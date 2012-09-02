@@ -15,7 +15,7 @@ var program = require('commander')
   , template
 
 program
-	.version('0.2.0')
+	.version('0.3.0')
 	.option('-o, --output [file]', 'The output file')
 	.option('-t, --template [template]', 'A template for building the output file')
 	.option('-c, --clean', 'Deletes any files that resembles the template')
