@@ -24,13 +24,30 @@ How to run
 
 Running it is simple:
 
-	minifier [--out path/to/put/file] path/to/file
+	minifier [--output path/to/put/file] path/to/file
 
 If the output parameter is not set, it will place a file next to the original,
 with the suffix `.min`.
 
 For example, `minifier script.js` will output `script.min.js`, whereas
 `minifier --output out.js script.js` will output `out.js`.
+
+A folder can also be targeted. When that is done, it will minify all css and js
+file in that folder.
+
+In that case, `--output` does not make much sense, as all files will be minified
+to the same. If the name still requires a specific pattern such as a timestamp,
+`--template` is the option for you.
+
+There are various options available:
+
+- `{{filename}}` is the original filename.
+- `{{ext}}` is the extension.
+- `{{sha}}` is a sha-digest of the unminified file contents.
+- `{{md5}}` is a md5-digest of the unminified file contents.
+
+For example, `{{filename}}-{{md5}}.min.{{ext}}` will make `abc.js` into something
+like `abc-f90731d65c61af25b149658a120d26cf.min.js`.
 
 
 Running the tests

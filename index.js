@@ -17,7 +17,7 @@ var program = require('commander')
 program
 	.version('0.2.0')
 	.option('-o, --output [file]', 'The output file')
-	.option('-t, --output-template [template]', 'A template for building the output file')
+	.option('-t, --template [template]', 'A template for building the output file')
 	.usage('[--output file] path/to/input')
 	.parse(process.argv)
 
@@ -29,12 +29,12 @@ if(!input) {
 }
 
 output = program.output
-template = program.outputTemplate
+template = program.template
 
 if(output && template) {
 	console.log(
 		  'It does not make sense to provide both --output and '
-		+ '--output-template options. Please choose one.'
+		+ '--template options. Please choose one.'
 	)
 	process.exit(1)
 }
