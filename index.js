@@ -18,6 +18,7 @@ program
 	.version('0.2.0')
 	.option('-o, --output [file]', 'The output file')
 	.option('-t, --template [template]', 'A template for building the output file')
+	.option('-c, --clean', 'Deletes any files that resembles the template')
 	.usage('[--output file] path/to/input')
 	.parse(process.argv)
 
@@ -40,6 +41,10 @@ if(output && template) {
 }
 
 if(fs.statSync(input).isDirectory()) {
+	if(program.clean) {
+		clean(input, template || '{{filename}}.min.{{ext}}')
+	}
+
 	glob.glob(path.join(input, '**/*.js')).forEach(handleInput)
 	glob.glob(path.join(input, '**/*.css')).forEach(handleInput)
 
@@ -88,4 +93,11 @@ function css(input) {
 	  , renderedOutput = generateOutput(input, min, output || template)
 
 	fs.writeFileSync(renderedOutput, min)
+}
+
+function clean(dir, template) {
+	template = template.replace(/{{[^}]*}}/g, '*')
+	glob.glob(path.join(dir, '**/', template)).forEach(function(file) {
+		fs.unlink(file)
+	})
 }

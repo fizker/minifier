@@ -49,6 +49,12 @@ There are various options available:
 For example, `{{filename}}-{{md5}}.min.{{ext}}` will make `abc.js` into something
 like `abc-f90731d65c61af25b149658a120d26cf.min.js`.
 
+To avoid the minification of previously minified files, there is a `--clean`
+option, which will delete all files that match the output pattern.
+
+This also means that any real files that match the pattern will be removed as
+well, so please be careful.
+
 
 Running the tests
 -----------------
