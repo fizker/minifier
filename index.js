@@ -6,15 +6,19 @@ var program = require('commander')
   , sqwish = require('sqwish')
   , uglify = require('uglify-js')
   , stripUTF8ByteOrder = require('./src/utils').stripUTF8ByteOrder
+  , generateOutput = require('./src/utils').generateOutputName
+
+  , glob = require('glob-whatev')
 
   , input
   , output
-  , inDir
-  , outDir
+  , template
 
 program
 	.version('0.2.0')
 	.option('-o, --output [file]', 'The output file')
+	.option('-t, --template [template]', 'A template for building the output file')
+	.option('-c, --clean', 'Deletes any files that resembles the template')
 	.usage('[--output file] path/to/input')
 	.parse(process.argv)
 
@@ -24,41 +28,76 @@ if(!input) {
 	program.parse(['bla', 'bla', '--help'])
 	process.exit()
 }
-inDir = path.dirname(input)
 
-if(!/\.(js|css)$/.test(input)) {
-	console.log('Please reference a file with the extension .js or .css. You referenced <%s>', input)
+output = program.output
+template = program.template
+
+if(output && template) {
+	console.log(
+		  'It does not make sense to provide both --output and '
+		+ '--template options. Please choose one.'
+	)
+	process.exit(1)
+}
+
+if(fs.statSync(input).isDirectory()) {
+	if(program.clean) {
+		clean(input, template || '{{filename}}.min.{{ext}}')
+	}
+
+	glob.glob(path.join(input, '**/*.js')).forEach(handleInput)
+	glob.glob(path.join(input, '**/*.css')).forEach(handleInput)
+
+	console.log('done minifying all files in %s.', input)
 	process.exit()
 }
 
-output = program.output || input.replace(/\.(css|js)$/, '.min.$1')
-outDir = path.dirname(output)
 
-if(/\.js$/.test(input)) {
-	js(input, output)
-} else {
-	css(input, output)
-}
+handleInput(input)
 
 console.log('done minifying %s. The minified file can be found at %s.', input, output)
 
-function js(input, output) {
+function handleInput(input) {
+	if(!/\.(js|css)$/.test(input)) {
+		console.log('Please reference a file with the extension .js or .css. You referenced <%s>', input)
+		process.exit(1)
+	}
+
+	if(/\.js$/.test(input)) {
+		js(input)
+	} else {
+		css(input)
+	}
+}
+
+function js(input) {
 	var max = fs.readFileSync(input, 'utf8')
 	  , max = stripUTF8ByteOrder(max)
 	  , ast = uglify.parser.parse(max)
 	  , ast = uglify.uglify.ast_mangle(ast)
 	  , ast = uglify.uglify.ast_squeeze(ast)
 	  , min = uglify.uglify.gen_code(ast, {})
+	  , renderedOutput = generateOutput(input, min, output || template)
 
-	fs.writeFileSync(output, min)
+	fs.writeFileSync(renderedOutput, min)
 }
 
-function css(input, output) {
+function css(input) {
 	var parser = require('./src/css')
+	  , inDir = path.dirname(input)
+	  , outDir = path.dirname(output || input)
 	  , root = path.join(inDir, path.relative(inDir, outDir))
 	  , max = parser.parse(input, root)
 	  , max = stripUTF8ByteOrder(max)
 	  , min = sqwish.minify(max, false)
+	  , renderedOutput = generateOutput(input, min, output || template)
 
-	fs.writeFileSync(output, min)
+	fs.writeFileSync(renderedOutput, min)
+}
+
+function clean(dir, template) {
+	template = template.replace(/{{[^}]*}}/g, '*')
+	glob.glob(path.join(dir, '**/', template)).forEach(function(file) {
+		fs.unlink(file)
+	})
 }
