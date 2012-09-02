@@ -4,6 +4,7 @@ var path = require('path')
   , input = path.join(__dirname, 'test/manual/css/a.css')
   , output = path.join(__dirname, 'test/manual/min.css')
 
-process.argv.splice(2,0, input, '--output', output)
+var minifier = require('./index')
+minifier.minify(input, { output: output })
 
-require('./index')
+console.log('The manual test is complete')
