@@ -1,6 +1,7 @@
 describe('unit/css.parser.js', function() {
 	var parser = require('../../src/css')
 	  , fs = require('fs')
+	  , path = require('path')
 	  , fakes = sinon.scope()
 
 	beforeEach(function() {
@@ -20,19 +21,19 @@ describe('unit/css.parser.js', function() {
 		})
 		it('should fix imported urls according to the base path', function() {
 			fs.readFileSync.withArgs('a/b').returns('@import url(c);')
-			fs.readFileSync.withArgs('a/c').returns('a{background: url(d);}')
+			fs.readFileSync.withArgs(path.join('a/c')).returns('a{background: url(d);}')
 			var result = parser.parse('a/b', 'a')
 			expect(result).to.equal('a{background: url(d);}')
 		})
 		it('should work with absolute base paths', function() {
 			fs.readFileSync.withArgs('/a/file').returns('@import url(b/file);')
-			fs.readFileSync.withArgs('/a/b/file').returns('a{background: url(c/file);}')
+			fs.readFileSync.withArgs(path.join('/a/b/file')).returns('a{background: url(c/file);}')
 			var result = parser.parse('/a/file', '/a')
 			expect(result).to.equal('a{background: url(b/c/file);}')
 		})
 		it('should work with deeper nested base paths', function() {
 			fs.readFileSync.withArgs('/a/b/file').returns('@import url(c/file);')
-			fs.readFileSync.withArgs('/a/b/c/file').returns('a{background: url(d/file);}')
+			fs.readFileSync.withArgs(path.join('/a/b/c/file')).returns('a{background: url(d/file);}')
 			var result = parser.parse('/a/b/file', '/a')
 			expect(result).to.equal('a{background: url(b/c/d/file);}')
 		})
@@ -51,7 +52,7 @@ describe('unit/css.parser.js', function() {
 		it('should take the current path into consideration', function() {
 			fs.readFileSync.withArgs('a/b').returns('@import url(c);')
 			parser.parse('a/b')
-			expect(fs.readFileSync).to.have.been.calledWith('a/c')
+			expect(fs.readFileSync).to.have.been.calledWith(path.join('a/c'))
 		})
 		it('should apply the path to any other urls as well', function() {
 			fs.readFileSync.withArgs('a/b').returns('a{background: url(c);}')
@@ -60,7 +61,7 @@ describe('unit/css.parser.js', function() {
 		})
 		it('should apply the path through imports', function() {
 			fs.readFileSync.withArgs('a').returns('@import url(b/c);')
-			fs.readFileSync.withArgs('b/c').returns('a{background:url(d);')
+			fs.readFileSync.withArgs(path.join('b/c')).returns('a{background:url(d);')
 			var result = parser.parse('a')
 			expect(result).to.equal('a{background:url(b/d);')
 		})

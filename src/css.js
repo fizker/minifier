@@ -22,7 +22,7 @@ function parse(file, absRoot) {
 		})
 		.replace(urlMatcher, function(match, url) {
 			if(!url.match(absoluteUrl)) {
-				url = path.join(relRoot, url)
+				url = path.join(relRoot, url).replace(/\\/g, '/')
 			}
 			return format('url(%s)', url)
 		})

@@ -2,4 +2,4 @@
 
 //process.argv.splice(2, 0, '--grep', 'unit/');
 
-require('./node_modules/.bin/mocha');
+require('./node_modules/mocha/bin/mocha');

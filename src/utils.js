@@ -8,9 +8,15 @@ var format = require('util').format
   , digest = require('crypto').createHash
 
 function generateOutputName(input, inputContent, outputTemplate) {
-	var extractedInput = JSON.parse(input.replace(/^(.*)\.([^.]+)$/, '{"ext":"$2","filename":"$1"}'))
-	extractedInput.md5 = generate.bind(null, 'md5')
-	extractedInput.sha = generate.bind(null, 'sha256')
+	var extractedInput =
+		{ md5: generate.bind(null, 'md5')
+		, sha: generate.bind(null, 'sha256')
+		}
+	input.replace(/^(.*)\.([^.]+)$/, function(match, file, ext) {
+		extractedInput.ext = ext
+		extractedInput.filename = file
+		return ''
+	})
 
 	return hogan.compile(outputTemplate || '{{filename}}.min.{{ext}}').render(extractedInput)
 
