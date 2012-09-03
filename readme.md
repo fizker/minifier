@@ -77,7 +77,7 @@ The options-dictionary takes the same parameters as the command-line variant:
 - output: A path-string that tells where to put the output.
 - template: A string template for how to build the outputted filenames.
 - clean: A bool for whether other files with names similar to the template
-    should be deleted before minifying the contents of a directory.
+  should be deleted before minifying the contents of a directory.
 
 
 Running the tests
@@ -101,6 +101,7 @@ Credits
 
 In no particular order:
 
+- [duckduckgo](http://duckduckgo.com) for the image used by the manual tests.
 - [sqwish](https://github.com/ded/sqwish) for minifying CSS files.
 - [uglify-js](https://github.com/mishoo/UglifyJS) for minifying JS files.
 - [commander](https://github.com/visionmedia/commander.js) for command-line
@@ -109,3 +110,7 @@ In no particular order:
   [sinon](http://cjohansen.no/sinon/) and
   [sinon-chai](https://github.com/domenic/sinon-chai) for testing home-brewed
   logic.
+- [glob-whatev](https://github.com/cowboy/node-glob-whatev) for trawling
+  through the file-system when targetting a folder.
+- [hogan.js](http://twitter.github.com/hogan.js/) for parsing the template
+  string.
