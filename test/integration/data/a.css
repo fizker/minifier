@@ -1,0 +1,8 @@
+@import url(b.css);
+@import url(a/c.css);
+
+.root-img {
+	background: url(../gfx/img.png);
+}
+
+.a-file {}
