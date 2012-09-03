@@ -20,7 +20,7 @@ function minify(input, options) {
 	  , template
 
 	if(!input) {
-		obj.emit('error', 'The input is required')
+		obj.emit('error', new Error('The input is required'))
 	}
 
 	output = options.output
@@ -29,8 +29,8 @@ function minify(input, options) {
 	if(output && template) {
 		obj.emit(
 			  'error'
-			,   'It does not make sense to provide both --output and '
-			  + '--template options. Please choose one.'
+			,   new Error('It does not make sense to provide both --output and '
+			  + '--template options. Please choose one.')
 		)
 	}
 
@@ -51,10 +51,10 @@ function minify(input, options) {
 		if(!/\.(js|css)$/.test(input)) {
 			obj.on(
 				  'error'
-				, format(
+				, new Error(format(
 				    'Please reference a file with the extension .js or .css. You referenced <%s>'
 				  , input
-				  )
+				  ))
 				)
 			return false
 		}

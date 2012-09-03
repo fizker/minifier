@@ -19,8 +19,8 @@ There are no way to install it atm. Instead, pull it from github and create an a
 I know, I know, this is not optimal. But it needs to work before it needs to be pretty :).
 
 
-How to run
-----------
+How to run from a command-line
+------------------------------
 
 Running it is simple:
 
@@ -54,6 +54,30 @@ option, which will delete all files that match the output pattern.
 
 This also means that any real files that match the pattern will be removed as
 well, so please be careful.
+
+
+Running from a node-script
+--------------------------
+
+It is also possible to run the minifier from within another node script:
+
+	var minifier = require('minifier')
+	  , input = '/some/path'
+
+	minifier.on('error', function(err) {
+		// handle any potential error
+	})
+	minifier.minify(input, options)
+
+As with the command-line variant, the input should be a path to either a
+javascript file, a css file or a directory.
+
+The options-dictionary takes the same parameters as the command-line variant:
+
+- output: A path-string that tells where to put the output.
+- template: A string template for how to build the outputted filenames.
+- clean: A bool for whether other files with names similar to the template
+    should be deleted before minifying the contents of a directory.
 
 
 Running the tests
