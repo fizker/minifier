@@ -1,7 +1,7 @@
 { "author": "Benjamin Horsleben <benjamin@fizkerinc.dk> (http://fizkerinc.dk)"
 , "name": "minifier"
 , "description": "A simple tool for minifying CSS/JS without a big setup"
-, "version": "0.3.0"
+, "version": "0.4.0"
 , "license": "WTFPL"
 , "main": "index.js"
 , "dependencies":
