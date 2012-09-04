@@ -14,9 +14,13 @@ Feature highlights
 How to install
 --------------
 
-There are no way to install it atm. Instead, pull it from github and create an alias.
+There are two ways to install it:
 
-I know, I know, this is not optimal. But it needs to work before it needs to be pretty :).
+1. `npm install minifier`
+2. Cloning directly from [github](https://github.com/fizker/minifier).
+
+None of them links to binaries automatically, so that is currently a manual
+operation. This will be solved in the near future, though.
 
 
 How to run from a command-line
@@ -24,7 +28,7 @@ How to run from a command-line
 
 Running it is simple:
 
-	minifier [--output path/to/put/file] path/to/file
+	minify [--output path/to/put/file] path/to/file
 
 If the output parameter is not set, it will place a file next to the original,
 with the suffix `.min`.

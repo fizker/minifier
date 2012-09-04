@@ -1,9 +1,15 @@
 { "author": "Benjamin Horsleben <benjamin@fizkerinc.dk> (http://fizkerinc.dk)"
 , "name": "minifier"
 , "description": "A simple tool for minifying CSS/JS without a big setup"
+, "keywords": "javascript js css minify minifier build"
 , "version": "0.4.1"
 , "license": "WTFPL"
 , "main": "index.js"
+, "repository":
+  { "type": "git"
+  , "url": "git://github.com/fizker/minifier.git"
+  }
+, "bugs": "https://github.com/fizker/minifier/issues"
 , "dependencies":
   { "sqwish": "0.2.0"
   , "uglify-js": "1.3.2"
