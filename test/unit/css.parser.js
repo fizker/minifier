@@ -68,6 +68,11 @@ describe('unit/css.parser.js', function() {
 	})
 	describe('When parsing a file with different imports', function() {
 		var result
+		it('should work with urls containing white-space', function() {
+			fs.readFileSync.withArgs('a.css').returns('@import  url(  file  )  ;')
+			result = parser.parse('a.css')
+			expect(result).to.equal('read file')
+		})
 		it('should work with strings with single quotes', function() {
 			fs.readFileSync.withArgs('a.css').returns("@import 'file';")
 			result = parser.parse('a.css')
