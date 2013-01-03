@@ -43,7 +43,7 @@ describe('integration/api.css.js', function() {
 			)
 		})
 		afterEach(function() {
-			fs.unlink(output)
+			fs.unlinkSync(output)
 		})
 
 		it('should create the minified file', function() {

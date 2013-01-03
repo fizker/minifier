@@ -68,12 +68,7 @@ function minify(input, options) {
 	}
 
 	function js(input) {
-		var max = fs.readFileSync(input, 'utf8')
-		  , max = stripUTF8ByteOrder(max)
-		  , ast = uglify.parser.parse(max)
-		  , ast = uglify.uglify.ast_mangle(ast)
-		  , ast = uglify.uglify.ast_squeeze(ast)
-		  , min = uglify.uglify.gen_code(ast, {})
+		var min = uglify.minify(input).code
 		  , renderedOutput = generateOutput(input, min, output || template)
 
 		fs.writeFileSync(renderedOutput, min)
