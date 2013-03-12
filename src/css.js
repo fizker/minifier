@@ -13,6 +13,7 @@ var fs = require('fs')
 
 function parse(file, absRoot) {
 	var root = path.dirname(file)
+	  , absRoot = absRoot || ''
 	  , relRoot = path.relative(absRoot, root)
 	  , content = utils.stripUTF8ByteOrder(fs.readFileSync(file, 'utf8'))
 
