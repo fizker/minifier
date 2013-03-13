@@ -6,7 +6,7 @@ var program = require('commander')
 
 if(require.main === module) {
 	program
-		.version('0.4.4')
+		.version(require('./package.json').version)
 		.option('-o, --output [file]', 'The output file')
 		.option('-t, --template [template]', 'A template for building the output file')
 		.option('-c, --clean', 'Deletes any files that resembles the template')
