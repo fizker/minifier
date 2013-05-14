@@ -23,8 +23,7 @@
 , "devDependencies":
   { "mocha": "~1.7.4"
   , "chai": "~1.4.2"
-  , "sinon": "git://github.com/fizker/Sinon.JS.git#v1.5.2-fzk"
-  , "sinon-chai": "~2.3.0"
+  , "fzkes": "~0.7.1"
   }
 , "optionalDependencies":
   {

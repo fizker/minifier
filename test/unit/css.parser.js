@@ -2,15 +2,14 @@ describe('unit/css.parser.js', function() {
 	var parser = require('../../src/css')
 	  , fs = require('fs')
 	  , path = require('path')
-	  , fakes = sinon.scope()
 
 	beforeEach(function() {
-		fakes.fake(fs, 'readFileSync').callsFake(function(file) {
+		fzkes.fake(fs, 'readFileSync').calls(function(file) {
 			return 'read ' + file
 		})
 	})
 	afterEach(function() {
-		fakes.restore()
+		fzkes.restore()
 	})
 
 	describe('When providing a root path', function() {
