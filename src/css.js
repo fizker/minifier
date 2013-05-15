@@ -10,6 +10,7 @@ var fs = require('fs')
   , importMatcher = /@import +(url\()?([^()]+)\)? *;/g
   , urlMatcher = /url\(["']?([^"'()]+)["']?\)/g
   , absoluteUrl = /^([a-zA-Z]:\/)?\//
+var dataUrl = /^data:/
 
 function parse(file, absRoot) {
 	var root = path.dirname(file)
@@ -23,7 +24,7 @@ function parse(file, absRoot) {
 		})
 		.replace(urlMatcher, function(match, url) {
 			url = url.trim()
-			if(!url.match(absoluteUrl)) {
+			if(!url.match(dataUrl) && !url.match(absoluteUrl)) {
 				url = path.join(relRoot, url).replace(/\\/g, '/')
 			}
 			return format('url(%s)', url)

@@ -12,6 +12,15 @@ describe('unit/css.parser.js', function() {
 		fzkes.restore()
 	})
 
+	describe('When providing a data-url', function() {
+		it('should not replace forward slashes', function() {
+			fs.readFileSync.withArgs('a')
+				.returns('a{background:url(data:image/png;base64,abc//def)}')
+			var result = parser.parse('a')
+			expect(result).to.equal('a{background:url(data:image/png;base64,abc//def)}')
+		})
+	})
+
 	describe('When providing a root path', function() {
 		it('should fix urls according to the base path', function() {
 			fs.readFileSync.withArgs('a/b').returns('a{background: url(c);}')
