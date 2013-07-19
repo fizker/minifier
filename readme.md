@@ -83,6 +83,26 @@ The options-dictionary takes the same parameters as the command-line variant:
 - clean: A bool for whether other files with names similar to the template
   should be deleted before minifying the contents of a directory.
 
+-----
+
+The method for building the output name from the template is exposed for
+convenience:
+
+	var minifier = require('minifier')
+	var file = 'abc.js'
+	var template = '{{filename}}.{{md5}}.{{ext}}'
+	var content = null; // or the content, if md5 or sha1 should be calculated
+	var result = minifier.generateOutputName(file, { template: template, content: content })
+
+If `content` is eschewed, the `md5` and `sha` digests cannot be calculated.
+
+But there is an option for turning them into either `RegExp` or `glob` compatible
+syntax: Simply add `glob: true` or `regex: true` to the options array:
+
+	var result = minifier.generateOutputName(file, { template: template, glob: true })
+
+`glob` will return a string for passing to a `glob` function, whereas `regex`
+will return a `RegExp` instance for manual comparison.
 
 Running the tests
 -----------------

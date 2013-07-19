@@ -12,7 +12,7 @@ var EventEmitter = require('events').EventEmitter
 var obj = new EventEmitter()
 
 obj.minify = minify
-obj.generateOutput = generateOutput
+obj.generateOutputName = generateOutput
 
 module.exports = obj
 
@@ -70,7 +70,8 @@ function minify(input, options) {
 
 	function js(input) {
 		var min = uglify.minify(input).code
-		var renderedOutput = generateOutput(input, min, output || template)
+		var opts = { content: min, template: output || template }
+		var renderedOutput = generateOutput(input, opts)
 
 		fs.writeFileSync(renderedOutput, min)
 	}
@@ -82,7 +83,8 @@ function minify(input, options) {
 		var max = cssParser.parse(input, root)
 		var max = stripUTF8ByteOrder(max)
 		var min = sqwish.minify(max, false)
-		var renderedOutput = generateOutput(input, min, output || template)
+		var opts = { content: min, template: output || template }
+		var renderedOutput = generateOutput(input, opts)
 
 		fs.writeFileSync(renderedOutput, min)
 	}
