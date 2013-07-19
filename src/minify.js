@@ -1,23 +1,24 @@
 var fs = require('fs')
-  , path = require('path')
-  , format = require('util').format
-  , sqwish = require('sqwish')
-  , uglify = require('uglify-js')
-  , stripUTF8ByteOrder = require('./utils').stripUTF8ByteOrder
-  , generateOutput = require('./utils').generateOutputName
-  , glob = require('glob-whatev')
-  , cssParser = require('./css')
+var path = require('path')
+var format = require('util').format
+var sqwish = require('sqwish')
+var uglify = require('uglify-js')
+var stripUTF8ByteOrder = require('./utils').stripUTF8ByteOrder
+var generateOutput = require('./utils').generateOutputName
+var glob = require('glob-whatev')
+var cssParser = require('./css')
 
-  , EventEmitter = require('events').EventEmitter
-  , obj = new EventEmitter()
+var EventEmitter = require('events').EventEmitter
+var obj = new EventEmitter()
 
 obj.minify = minify
+obj.generateOutput = generateOutput
 
 module.exports = obj
 
 function minify(input, options) {
 	var output
-	  , template
+	var template
 
 	if(!input) {
 		obj.emit('error', new Error('The input is required'))
@@ -69,19 +70,19 @@ function minify(input, options) {
 
 	function js(input) {
 		var min = uglify.minify(input).code
-		  , renderedOutput = generateOutput(input, min, output || template)
+		var renderedOutput = generateOutput(input, min, output || template)
 
 		fs.writeFileSync(renderedOutput, min)
 	}
 
 	function css(input) {
 		var inDir = path.dirname(input)
-		  , outDir = path.dirname(output || input)
-		  , root = path.join(inDir, path.relative(inDir, outDir))
-		  , max = cssParser.parse(input, root)
-		  , max = stripUTF8ByteOrder(max)
-		  , min = sqwish.minify(max, false)
-		  , renderedOutput = generateOutput(input, min, output || template)
+		var outDir = path.dirname(output || input)
+		var root = path.join(inDir, path.relative(inDir, outDir))
+		var max = cssParser.parse(input, root)
+		var max = stripUTF8ByteOrder(max)
+		var min = sqwish.minify(max, false)
+		var renderedOutput = generateOutput(input, min, output || template)
 
 		fs.writeFileSync(renderedOutput, min)
 	}

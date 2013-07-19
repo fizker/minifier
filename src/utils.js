@@ -4,8 +4,8 @@ module.exports =
 	}
 
 var format = require('util').format
-  , hogan = require('hogan.js')
-  , digest = require('crypto').createHash
+var hogan = require('hogan.js')
+var digest = require('crypto').createHash
 
 function generateOutputName(input, inputContent, outputTemplate) {
 	var extractedInput =

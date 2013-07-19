@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 var program = require('commander')
-  , minifier = require('./src/minify')
-  , input
+var minifier = require('./src/minify')
+var input
 
 if(require.main === module) {
 	program

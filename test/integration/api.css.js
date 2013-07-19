@@ -1,11 +1,11 @@
 describe('integration/api.css.js', function() {
 	var minifier = require('../../index')
-	  , fs = require('fs')
-	  , path = require('path')
+	var fs = require('fs')
+	var path = require('path')
 
 	describe('When calling the api on a folder', function() {
 		var input = path.join(__dirname, 'data')
-		  , template = '{{filename}}.{{md5}}.{{ext}}'
+		var template = '{{filename}}.{{md5}}.{{ext}}'
 
 		beforeEach(function() {
 			minifier.minify(
@@ -34,7 +34,7 @@ describe('integration/api.css.js', function() {
 	})
 	describe('When calling the api on a single file', function() {
 		var input = path.join(__dirname, 'data/a.css')
-		  , output = path.join(__dirname, 'data/a.output.css')
+		var output = path.join(__dirname, 'data/a.output.css')
 		beforeEach(function() {
 			minifier.minify(
 				  input

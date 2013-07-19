@@ -45,7 +45,7 @@ function compare(actual, expected) {
 
 	return Object.keys(expected).every(function(key) {
 		var eo = expected[key]
-		  , ao = actual[key]
+		var ao = actual[key]
 		if(typeof(eo) === 'object' && eo !== null && ao !== null) {
 			return compare(ao, eo);
 		}

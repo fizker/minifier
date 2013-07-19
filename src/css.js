@@ -3,20 +3,20 @@ module.exports =
 	}
 
 var fs = require('fs')
-  , path = require('path')
-  , format = require('util').format
-  , utils = require('./utils')
-  , stringImportMatcher = /@import ["'](.+)["'];/g
-  , importMatcher = /@import +(url\()?([^()]+)\)? *;/g
-  , urlMatcher = /url\(["']?([^"'()]+)["']?\)/g
-  , absoluteUrl = /^([a-zA-Z]:\/)?\//
+var path = require('path')
+var format = require('util').format
+var utils = require('./utils')
+var stringImportMatcher = /@import ["'](.+)["'];/g
+var importMatcher = /@import +(url\()?([^()]+)\)? *;/g
+var urlMatcher = /url\(["']?([^"'()]+)["']?\)/g
+var absoluteUrl = /^([a-zA-Z]:\/)?\//
 var dataUrl = /^data:/
 
 function parse(file, absRoot) {
 	var root = path.dirname(file)
-	  , absRoot = absRoot || ''
-	  , relRoot = path.relative(absRoot, root)
-	  , content = utils.stripUTF8ByteOrder(fs.readFileSync(file, 'utf8'))
+	var absRoot = absRoot || ''
+	var relRoot = path.relative(absRoot, root)
+	var content = utils.stripUTF8ByteOrder(fs.readFileSync(file, 'utf8'))
 
 	return content
 		.replace(stringImportMatcher, function(match, url) {

@@ -1,7 +1,7 @@
 describe('unit/css.parser.js', function() {
 	var parser = require('../../src/css')
-	  , fs = require('fs')
-	  , path = require('path')
+	var fs = require('fs')
+	var path = require('path')
 
 	beforeEach(function() {
 		fzkes.fake(fs, 'readFileSync').calls(function(file) {

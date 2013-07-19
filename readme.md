@@ -66,7 +66,7 @@ Running from a node-script
 It is also possible to run the minifier from within another node script:
 
 	var minifier = require('minifier')
-	  , input = '/some/path'
+	var input = '/some/path'
 
 	minifier.on('error', function(err) {
 		// handle any potential error

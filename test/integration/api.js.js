@@ -1,10 +1,10 @@
 describe('integration/api.js.js', function() {
 	var minifier = require('../../index')
-	  , fs = require('fs')
-	  , path = require('path')
+	var fs = require('fs')
+	var path = require('path')
 	describe('When aimed at a JS file', function() {
 		var input = path.join(__dirname, 'data-js/a.js')
-		  , output = path.join(__dirname, 'data-js/a.output.js')
+		var output = path.join(__dirname, 'data-js/a.output.js')
 		beforeEach(function() {
 			minifier.minify(
 			  input
