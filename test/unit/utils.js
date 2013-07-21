@@ -14,6 +14,11 @@ describe('unit/utils.js', function() {
 			})
 		})
 		describe('with template-vars', function() {
+			it('should place the output next to the input', function() {
+				var opts = { template: '1.{{ext}}' }
+				expect(utils.generateOutputName('a/b.js', opts))
+					.to.equal('a/1.js')
+			})
 			it('should replace {{filename}}', function() {
 				var opts = { template: '1-{{filename}}-2' }
 				expect(utils.generateOutputName('a.js', opts))
