@@ -130,11 +130,9 @@ In no particular order:
 - [uglify-js](https://github.com/mishoo/UglifyJS) for minifying JS files.
 - [commander](https://github.com/visionmedia/commander.js) for command-line
   interaction.
-- [mocha](https://github.com/visionmedia/mocha), [chai](http://chaijs.com),
-  [sinon](http://cjohansen.no/sinon/) and
-  [sinon-chai](https://github.com/domenic/sinon-chai) for testing home-brewed
-  logic.
-- [glob-whatev](https://github.com/cowboy/node-glob-whatev) for trawling
-  through the file-system when targetting a folder.
+- [mocha](https://github.com/visionmedia/mocha) and [chai](http://chaijs.com)
+  for testing home-brewed logic.
+- [glob](https://github.com/isaacs/node-glob) for trawling through the
+  file-system when targetting a folder.
 - [hogan.js](http://twitter.github.com/hogan.js/) for parsing the template
   string.

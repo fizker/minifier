@@ -5,7 +5,7 @@ var sqwish = require('sqwish')
 var uglify = require('uglify-js')
 var stripUTF8ByteOrder = require('./utils').stripUTF8ByteOrder
 var generateOutput = require('./utils').generateOutputName
-var glob = require('glob-whatev')
+var glob = require('glob')
 var cssParser = require('./css')
 
 var EventEmitter = require('events').EventEmitter
@@ -45,8 +45,8 @@ function minify(input, options) {
 			clean(input, template || '{{filename}}.min.{{ext}}')
 		}
 
-		glob.glob(path.join(input, '**/*.js')).every(handleInput)
-		glob.glob(path.join(input, '**/*.css')).every(handleInput)
+		glob.sync(path.join(input, '**/*.js')).every(handleInput)
+		glob.sync(path.join(input, '**/*.css')).every(handleInput)
 
 		return
 	}
@@ -88,16 +88,16 @@ function minify(input, options) {
 		var max = cssParser.parse(input, root)
 		var max = stripUTF8ByteOrder(max)
 		var min = sqwish.minify(max, false)
-		var opts = { content: min, template: output || template }
-		var renderedOutput = generateOutput(input, opts)
+		var opts = { content: min, template: template }
+		var renderedOutput = output || generateOutput(input, opts)
 
 		fs.writeFileSync(renderedOutput, min)
 	}
 
 	function clean(dir, template) {
 		template = template.replace(/{{[^}]*}}/g, '*')
-		glob.glob(path.join(dir, '**/', template)).forEach(function(file) {
-			fs.unlink(file)
+		glob.sync(path.join(dir, '**/', template)).forEach(function(file) {
+			fs.unlinkSync(file)
 		})
 	}
 }

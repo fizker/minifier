@@ -14,7 +14,7 @@
   { "sqwish": "~0.2.1"
   , "uglify-js": "~2.2.2"
   , "commander": "~1.1.1"
-  , "glob-whatev": "~0.1.8"
+  , "glob": "~3.2.3"
   , "hogan.js": "~2.0.0"
   }
 , "scripts":
