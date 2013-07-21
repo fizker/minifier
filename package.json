@@ -17,6 +17,9 @@
   , "glob": "~3.2.3"
   , "hogan.js": "~2.0.0"
   }
+, "bin":
+  { "minify": "index.js"
+  }
 , "scripts":
   { "test": "mocha"
   }

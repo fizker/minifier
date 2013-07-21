@@ -16,11 +16,13 @@ How to install
 
 There are two ways to install it:
 
-1. `npm install minifier`
+1. `npm install [-g] minifier`
 2. Cloning directly from [github](https://github.com/fizker/minifier).
 
-None of them links to binaries automatically, so that is currently a manual
-operation. This will be solved in the near future, though.
+Installing through `npm` will create a binary (`minify`) in the usual
+locations. Cloning and installing from `github` will not, but the `index.js`
+file can be executed either directly or via `node index.js`; this is the file
+that the binary links to anyway.
 
 
 How to run from a command-line
