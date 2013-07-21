@@ -51,6 +51,10 @@ function minify(input, options) {
 		return
 	}
 
+	if(options.clean) {
+		clean(path.dirname(input), output || template)
+	}
+
 	handleInput(input)
 
 	function handleInput(input) {
