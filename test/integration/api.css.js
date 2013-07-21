@@ -53,6 +53,21 @@ describe('integration/api.css.js', function() {
 					.to.be.true
 			})
 		})
+		describe('with the `cleanOnly` option set', function() {
+			beforeEach(function() {
+				minifier.minify(input, { template: template, cleanOnly: true })
+			})
+			it('should delete the files', function() {
+				expect(fs.existsSync(path.join(__dirname, 'data/a.63c803912abe72f892fd24fbdb428eda.out.css')))
+					.to.be.false
+				expect(fs.existsSync(path.join(__dirname, 'data/b.0ef167c4cedf9850d3efb1a0507b8b7f.out.css')))
+					.to.be.false
+				expect(fs.existsSync(path.join(__dirname, 'data/a/c.86bc73330e434bf294807fbe6056d40c.out.css')))
+					.to.be.false
+				expect(fs.existsSync(path.join(__dirname, 'data/b/d.a6deef4497cce70a5aeaefca0e490c03.out.css')))
+					.to.be.false
+			})
+		})
 	})
 	describe('When calling the api on a single file', function() {
 		var input = path.join(__dirname, 'data/a.css')

@@ -25,6 +25,9 @@ function minify(input, options) {
 		obj.emit('error', new Error('The input is required'))
 	}
 
+	if(options.cleanOnly) {
+		options.clean = true
+	}
 	output = options.output
 	template = options.template
 
@@ -43,6 +46,9 @@ function minify(input, options) {
 		}
 		if(options.clean) {
 			clean(input, template || '{{filename}}.min.{{ext}}')
+		}
+		if(options.cleanOnly) {
+			return
 		}
 
 		glob.sync(path.join(input, '**/*.js')).every(handleInput)
