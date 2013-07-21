@@ -58,7 +58,15 @@ function minify(input, options) {
 	}
 
 	if(options.clean) {
-		clean(path.dirname(input), output || template)
+		if(template) {
+			clean(path.dirname(input), template)
+		} else if(fs.existsSync(output)) {
+			fs.unlinkSync(output)
+		}
+	}
+
+	if(options.cleanOnly) {
+		return
 	}
 
 	handleInput(input)
@@ -106,7 +114,7 @@ function minify(input, options) {
 
 	function clean(dir, template) {
 		template = template.replace(/{{[^}]*}}/g, '*')
-		glob.sync(path.join(dir, '**/', template)).forEach(function(file) {
+		glob.sync(path.join(dir, '**', template)).forEach(function(file) {
 			fs.unlinkSync(file)
 		})
 	}

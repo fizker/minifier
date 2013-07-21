@@ -57,7 +57,7 @@ describe('integration/api.css.js', function() {
 			beforeEach(function() {
 				minifier.minify(input, { template: template, cleanOnly: true })
 			})
-			it('should delete the files', function() {
+			it('should clean but not create the files', function() {
 				expect(fs.existsSync(path.join(__dirname, 'data/a.63c803912abe72f892fd24fbdb428eda.out.css')))
 					.to.be.false
 				expect(fs.existsSync(path.join(__dirname, 'data/b.0ef167c4cedf9850d3efb1a0507b8b7f.out.css')))
@@ -71,7 +71,7 @@ describe('integration/api.css.js', function() {
 	})
 	describe('When calling the api on a single file', function() {
 		var input = path.join(__dirname, 'data/a.css')
-		var output = path.join(__dirname, 'data/a.output.css')
+		var output = path.join(__dirname, 'a.output.css')
 		beforeEach(function() {
 			minifier.minify(input, { output: output })
 		})
@@ -84,7 +84,7 @@ describe('integration/api.css.js', function() {
 		})
 		it('should reformat the url correctly', function() {
 			var contents = fs.readFileSync(output, 'utf8')
-			expect(contents).to.match(/\.nested-img[^}]+..\/gfx\/img\.png/)
+			expect(contents).to.match(/\.nested-img[^}]+gfx\/img\.png/)
 		})
 		it('should import all files', function() {
 			var contents = fs.readFileSync(output, 'utf8')
@@ -93,6 +93,14 @@ describe('integration/api.css.js', function() {
 				.and.to.contain('.b-file')
 				.and.to.contain('.c-file')
 				.and.to.contain('.d-file')
+		})
+		describe('with the `cleanOnly` option set', function() {
+			beforeEach(function() {
+				minifier.minify(input, { output: output, cleanOnly: true })
+			})
+			it('should remove the file', function() {
+				expect(fs.existsSync(output)).to.be.false
+			})
 		})
 		describe('with the `template` option set', function() {
 			var template = 'template.{{md5}}.out.{{ext}}'
@@ -106,7 +114,7 @@ describe('integration/api.css.js', function() {
 				expect(fs.existsSync(path.join(__dirname, 'data/template.63c803912abe72f892fd24fbdb428eda.out.css')))
 					.to.be.true
 			})
-			describe('and the clean option', function() {
+			describe('and the `clean` option', function() {
 				var oldContent
 				beforeEach(function() {
 					oldContent = fs.readFileSync(input)
@@ -124,6 +132,15 @@ describe('integration/api.css.js', function() {
 				it('should create the new file', function() {
 					expect(fs.existsSync(path.join(__dirname, 'data/template.34c67064c3f76ca1f5798ad0fd1f8f98.out.css')))
 						.to.be.true
+				})
+			})
+			describe('and the `cleanOnly` option', function() {
+				beforeEach(function() {
+					minifier.minify(input, { template: template, cleanOnly: true })
+				})
+				it('should clean, but not create the file', function() {
+					expect(fs.existsSync(path.join(__dirname, 'data/template.63c803912abe72f892fd24fbdb428eda.out.css')))
+						.to.be.false
 				})
 			})
 		})
