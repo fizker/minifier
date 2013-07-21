@@ -110,9 +110,7 @@ Running the tests
 After installing from [github](https://github.com/fizker/minifier), simply run
 `npm test`.
 
-Alternatively, the `runAllTests.js` script will also execute the tests.
-
-There is also a script called `prepareManualTests.js`, which will run the script
+There is a script called `prepareManualTests.js`, which will run the script
 against the css-files inside `test/manual/css/` and provides a real-world
 example of the CSS minification tools.
 
