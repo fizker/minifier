@@ -17,6 +17,7 @@ obj.generateOutputName = generateOutput
 module.exports = obj
 
 function minify(input, options) {
+	if(!options) options = {}
 	var output
 	var template
 
@@ -28,7 +29,7 @@ function minify(input, options) {
 	template = options.template
 
 	if(output && template) {
-		obj.emit(
+		return obj.emit(
 			  'error'
 			,   new Error('It does not make sense to provide both --output and '
 			  + '--template options. Please choose one.')
@@ -36,6 +37,10 @@ function minify(input, options) {
 	}
 
 	if(fs.statSync(input).isDirectory()) {
+		if(output) {
+			return obj.emit('error',
+				new Error('You cannot use `output` option against a directory'))
+		}
 		if(options.clean) {
 			clean(input, template || '{{filename}}.min.{{ext}}')
 		}
@@ -50,7 +55,7 @@ function minify(input, options) {
 
 	function handleInput(input) {
 		if(!/\.(js|css)$/.test(input)) {
-			obj.on(
+			obj.emit(
 				  'error'
 				, new Error(format(
 				    'Please reference a file with the extension .js or .css. You referenced <%s>'
@@ -70,8 +75,8 @@ function minify(input, options) {
 
 	function js(input) {
 		var min = uglify.minify(input).code
-		var opts = { content: min, template: output || template }
-		var renderedOutput = generateOutput(input, opts)
+		var opts = { content: min, template: template }
+		var renderedOutput = output || generateOutput(input, opts)
 
 		fs.writeFileSync(renderedOutput, min)
 	}
