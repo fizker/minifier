@@ -41,7 +41,8 @@ file in that folder.
 
 In that case, `--output` does not make much sense, as all files will be minified
 to the same. If the name still requires a specific pattern such as a timestamp,
-`--template` is the option for you.
+`--template` is the option for you. Note that files named after a template will
+be left in the same folder as the original file.
 
 There are various options available:
 
@@ -74,14 +75,14 @@ It is also possible to run the minifier from within another node script:
 	minifier.minify(input, options)
 
 As with the command-line variant, the input should be a path to either a
-javascript file, a css file or a directory.
+javascript file, a css file or a folder.
 
 The options-dictionary takes the same parameters as the command-line variant:
 
 - output: A path-string that tells where to put the output.
 - template: A string template for how to build the outputted filenames.
 - clean: A bool for whether other files with names similar to the template
-  should be deleted before minifying the contents of a directory.
+  should be deleted before minifying the contents of a folder.
 
 -----
 
@@ -93,6 +94,8 @@ convenience:
 	var template = '{{filename}}.{{md5}}.{{ext}}'
 	var content = null; // or the content, if md5 or sha1 should be calculated
 	var result = minifier.generateOutputName(file, { template: template, content: content })
+
+If the input-path includes any folders, they will also be added to the output.
 
 If `content` is eschewed, the `md5` and `sha` digests cannot be calculated.
 
