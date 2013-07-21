@@ -7,7 +7,7 @@ describe('integration/api.css.js', function() {
 		var input = path.join(__dirname, 'data')
 		var template = '{{filename}}.{{md5}}.out.{{ext}}'
 
-		beforeEach(function() {debugger
+		beforeEach(function() {
 			minifier.minify(input, { template: template })
 		})
 		afterEach(function() {
@@ -78,6 +78,19 @@ describe('integration/api.css.js', function() {
 				.and.to.contain('.b-file')
 				.and.to.contain('.c-file')
 				.and.to.contain('.d-file')
+		})
+		describe('with the `template` option set', function() {
+			var template = 'template.{{md5}}.out.{{ext}}'
+			beforeEach(function() {
+				minifier.minify(input, { template: template })
+			})
+			afterEach(function() {
+				safeDelete(path.join(__dirname, 'data/template.63c803912abe72f892fd24fbdb428eda.out.css'))
+			})
+			it('should create the file correctly', function() {
+				expect(fs.existsSync(path.join(__dirname, 'data/template.63c803912abe72f892fd24fbdb428eda.out.css')))
+					.to.be.true
+			})
 		})
 	})
 
