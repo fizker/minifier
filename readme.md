@@ -83,6 +83,8 @@ The options-dictionary takes the same parameters as the command-line variant:
 - template: A string template for how to build the outputted filenames.
 - clean: A bool for whether other files with names similar to the template
   should be deleted before minifying the contents of a folder.
+- cleanOnly: A bool for whether to run with `clean` option and then exiting
+  before minifying any files.
 
 -----
 
