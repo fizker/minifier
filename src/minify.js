@@ -51,8 +51,18 @@ function minify(input, options) {
 			return
 		}
 
-		glob.sync(path.join(input, '**/*.js')).every(handleInput)
-		glob.sync(path.join(input, '**/*.css')).every(handleInput)
+		var files = glob.sync(path.join(input, '**/*.js'))
+			.concat(
+				glob.sync(path.join(input, '**/*.css'))
+			)
+		if(options.skip) {
+			files = files.filter(function(file) {
+				return !options.skip.some(function(filter) {
+					return ~file.indexOf(filter)
+				})
+			})
+		}
+		files.every(handleInput)
 
 		return
 	}
