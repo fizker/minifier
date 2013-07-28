@@ -102,9 +102,15 @@ function minify(input, options) {
 	}
 
 	function js(input) {
-		var min = uglify.minify(input).code
+		var max = fs.readFileSync(input, 'utf8')
+		var comment = firstComment(max)
+		var min = uglify.minify(max, { fromString: true }).code
 		var opts = { content: min, template: template }
 		var renderedOutput = output || generateOutput(input, opts)
+
+		if(comment) {
+			min = comment +'\n' + min
+		}
 
 		fs.writeFileSync(renderedOutput, min)
 	}
@@ -141,6 +147,17 @@ function minify(input, options) {
 		content = content.trim()
 		if(content[0] == '/' && content[1] == '*') {
 			return content.substring(0, content.indexOf('*/')+2)
+		}
+		if(content[0] == '/' && content[1] == '/') {
+			var lines = content.split(/[\r\n]{1,2}/g)
+			content = lines[0]
+			for(var i = 1; i < lines.length; i++) {
+				var line = lines[i]
+				if(line[0] == '/' && line[1] == '/') {
+					content += '\n' + line
+				}
+			}
+			return content
 		}
 		return null
 	}
