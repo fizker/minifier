@@ -27,6 +27,7 @@
   { "mocha": "~1.7.4"
   , "chai": "~1.4.2"
   , "fzkes": "~0.7.1"
+  , "finc-chai-helpers": "~0.1.0"
   }
 , "optionalDependencies":
   {
