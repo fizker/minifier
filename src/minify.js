@@ -113,9 +113,17 @@ function minify(input, options) {
 		var inDir = path.dirname(input)
 		var outDir = path.dirname(output || input)
 		var root = path.join(inDir, path.relative(inDir, outDir))
-		var max = cssParser.parse(input, root)
-		var max = stripUTF8ByteOrder(max)
-		var min = sqwish.minify(max, false)
+		var min = cssParser.parse(input, root, function(max) {
+			var max = stripUTF8ByteOrder(max)
+			var comment = firstComment(max)
+			var min = sqwish.minify(max, false)
+
+			if(comment) {
+				min = comment + '\n' + min
+			}
+
+			return min
+		})
 		var opts = { content: min, template: template }
 		var renderedOutput = output || generateOutput(input, opts)
 
@@ -127,5 +135,13 @@ function minify(input, options) {
 		glob.sync(path.join(dir, '**', template)).forEach(function(file) {
 			fs.unlinkSync(file)
 		})
+	}
+
+	function firstComment(content) {
+		content = content.trim()
+		if(content[0] == '/' && content[1] == '*') {
+			return content.substring(0, content.indexOf('*/')+2)
+		}
+		return null
 	}
 }

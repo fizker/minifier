@@ -12,11 +12,12 @@ var urlMatcher = /url\(["']?([^"'()]+)["']?\)/g
 var absoluteUrl = /^([a-zA-Z]:\/)?\//
 var dataUrl = /^data:/
 
-function parse(file, absRoot) {
+function parse(file, absRoot, minifier) {
+	if(!minifier) minifier = function(content) { return content }
 	var root = path.dirname(file)
 	var absRoot = absRoot || ''
 	var relRoot = path.relative(absRoot, root)
-	var content = utils.stripUTF8ByteOrder(fs.readFileSync(file, 'utf8'))
+	var content = minifier(utils.stripUTF8ByteOrder(fs.readFileSync(file, 'utf8')))
 
 	return content
 		.replace(stringImportMatcher, function(match, url) {
@@ -34,6 +35,7 @@ function parse(file, absRoot) {
 				file = path.join(absRoot, file)
 			}
 			var parsedFile = parse(file, absRoot)
-			return parsedFile
+			return parsedFile +'\n'
 		})
+		.trim()
 }
