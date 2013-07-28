@@ -14,6 +14,35 @@ describe('unit/minifier.js', function() {
 		fzkes.restore()
 	})
 
+	describe('When having a license block in JS', function() {
+		var opts
+		beforeEach(function() {
+			opts = { output: 'out.js' }
+		})
+		describe('as block comment', function() {
+			beforeEach(function() {
+				fs.readFileSync.withArgs('a.js')
+					.returns('/* test a\n * test\n */\n"a";')
+			})
+			it('should retain that block', function() {
+				minifier.minify('a.js', opts)
+				expect(fs.writeFileSync._calls[0][1])
+					.to.equal('/* test a\n * test\n */\n"a";')
+			})
+		})
+		describe('as single-line comments', function() {
+			beforeEach(function() {
+				fs.readFileSync.withArgs('a.js')
+					.returns('// test a\n// test\n"a";')
+			})
+			it('should retain that block', function() {
+				minifier.minify('a.js', opts)
+				expect(fs.writeFileSync._calls[0][1])
+					.to.equal('// test a\n// test\n"a";')
+			})
+		})
+	})
+
 	describe('When having a license block in CSS', function() {
 		var opts
 		beforeEach(function() {
