@@ -2,7 +2,7 @@
 , "name": "minifier"
 , "description": "A simple tool for minifying CSS/JS without a big setup"
 , "keywords": "javascript js css minify minifier build"
-, "version": "0.5.0"
+, "version": "0.6.0"
 , "license": "WTFPL"
 , "main": "index.js"
 , "repository":
