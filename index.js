@@ -13,6 +13,7 @@ if(require.main === module) {
 		.option('-c, --clean', 'Deletes any files that resembles the template')
 		.option('-C, --clean-only', 'Same as `--clean`, but without minifying the files afterwards')
 		.option('-s, --skip <path-component', 'Skip any files that contains this in the path')
+		.option('--no-comments', 'Remove license-style comments')
 		.usage('[--output file] path/to/input')
 
 		.on('skip', function(path) {
@@ -29,6 +30,8 @@ if(require.main === module) {
 	}
 
 	if(skip.length) program.skip = skip
+
+	program.noComments = program.comments === false
 
 	minifier.on('error', function(msg) {
 		console.log(msg)

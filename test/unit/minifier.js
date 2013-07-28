@@ -41,6 +41,25 @@ describe('unit/minifier.js', function() {
 					.to.equal('// test a\n// test\n"a";')
 			})
 		})
+		describe('with the `noComments` flag', function() {
+			beforeEach(function() {
+				opts.noComments = true
+			})
+			it('should remove comment blocks', function() {
+				fs.readFileSync.withArgs('a.js')
+					.returns('/* test a\n * test\n */\n"a";')
+				minifier.minify('a.js', opts)
+				expect(fs.writeFileSync._calls[0][1])
+					.to.equal('"a";')
+			})
+			it('should remove comment lines', function() {
+				fs.readFileSync.withArgs('a.js')
+					.returns('// test a\n// test\n"a";')
+				minifier.minify('a.js', opts)
+				expect(fs.writeFileSync._calls[0][1])
+					.to.equal('"a";')
+			})
+		})
 	})
 
 	describe('When having a license block in CSS', function() {
@@ -66,6 +85,16 @@ describe('unit/minifier.js', function() {
 				var result = minifier.minify('c.css', opts)
 				expect(fs.writeFileSync._calls[0][1])
 					.to.equal('/* test c\n * test\n */\n/* test a\n * test\n */\na{color:blue}\n/* test b\n * test\n */\nb{color:green}')
+			})
+		})
+		describe('with the `noComments` flag set', function() {
+			beforeEach(function() {
+				opts.noComments = true
+			})
+			it('should remove the comment block', function() {
+				minifier.minify('a.css', opts)
+				expect(fs.writeFileSync._calls[0][1])
+					.to.equal('a{color:blue}')
 			})
 		})
 	})

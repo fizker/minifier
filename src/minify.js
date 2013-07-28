@@ -144,6 +144,7 @@ function minify(input, options) {
 	}
 
 	function firstComment(content) {
+		if(options.noComments) return null
 		content = content.trim()
 		if(content[0] == '/' && content[1] == '*') {
 			return content.substring(0, content.indexOf('*/')+2)
