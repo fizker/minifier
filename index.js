@@ -12,7 +12,7 @@ if(require.main === module) {
 		.option('-t, --template [template]', 'A template for building the output file')
 		.option('-c, --clean', 'Deletes any files that resembles the template')
 		.option('-C, --clean-only', 'Same as `--clean`, but without minifying the files afterwards')
-		.option('-s, --skip <path-component', 'Skip any files that contains this in the path')
+		.option('-s, --skip <path-component>', 'Skip any files that contains this in the path')
 		.option('--no-comments', 'Remove license-style comments')
 		.usage('[--output file] path/to/input')
 
