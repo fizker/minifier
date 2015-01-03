@@ -11,18 +11,18 @@ describe('integration/api.css.js', function() {
 			minifier.minify(input, { template: template })
 		})
 		afterEach(function() {
-			safeDelete(path.join(__dirname, 'data/a.2114535984263334c976e35e7455cc06.out.css'))
+			safeDelete(path.join(__dirname, 'data/a.038f892b193cbb3da530fa76d82789d3.out.css'))
 			safeDelete(path.join(__dirname, 'data/b.0ef167c4cedf9850d3efb1a0507b8b7f.out.css'))
-			safeDelete(path.join(__dirname, 'data/a/c.6e97644177df44ed0d7d0f15dd7e17d4.out.css'))
+			safeDelete(path.join(__dirname, 'data/a/c.dd62aed2915e5681a448abc41eca5c55.out.css'))
 			safeDelete(path.join(__dirname, 'data/b/d.a6deef4497cce70a5aeaefca0e490c03.out.css'))
 		})
 
 		it('should minify all the files', function() {
-			expect(fs.existsSync(path.join(__dirname, 'data/a.2114535984263334c976e35e7455cc06.out.css')))
+			expect(fs.existsSync(path.join(__dirname, 'data/a.038f892b193cbb3da530fa76d82789d3.out.css')))
 				.to.be.true
 			expect(fs.existsSync(path.join(__dirname, 'data/b.0ef167c4cedf9850d3efb1a0507b8b7f.out.css')))
 				.to.be.true
-			expect(fs.existsSync(path.join(__dirname, 'data/a/c.6e97644177df44ed0d7d0f15dd7e17d4.out.css')))
+			expect(fs.existsSync(path.join(__dirname, 'data/a/c.dd62aed2915e5681a448abc41eca5c55.out.css')))
 				.to.be.true
 			expect(fs.existsSync(path.join(__dirname, 'data/b/d.a6deef4497cce70a5aeaefca0e490c03.out.css')))
 				.to.be.true
@@ -43,7 +43,7 @@ describe('integration/api.css.js', function() {
 					.to.be.false
 				expect(fs.existsSync(path.join(__dirname, 'data/b.0ef167c4cedf9850d3efb1a0507b8b7f.out.css')))
 					.to.be.true
-				expect(fs.existsSync(path.join(__dirname, 'data/a/c.6e97644177df44ed0d7d0f15dd7e17d4.out.css')))
+				expect(fs.existsSync(path.join(__dirname, 'data/a/c.dd62aed2915e5681a448abc41eca5c55.out.css')))
 					.to.be.true
 				expect(fs.existsSync(path.join(__dirname, 'data/b/d.a6deef4497cce70a5aeaefca0e490c03.out.css')))
 					.to.be.true
@@ -58,11 +58,11 @@ describe('integration/api.css.js', function() {
 				minifier.minify(input, { template: template, cleanOnly: true })
 			})
 			it('should clean but not create the files', function() {
-				expect(fs.existsSync(path.join(__dirname, 'data/a.2114535984263334c976e35e7455cc06.out.css')))
+				expect(fs.existsSync(path.join(__dirname, 'data/a.038f892b193cbb3da530fa76d82789d3.out.css')))
 					.to.be.false
 				expect(fs.existsSync(path.join(__dirname, 'data/b.0ef167c4cedf9850d3efb1a0507b8b7f.out.css')))
 					.to.be.false
-				expect(fs.existsSync(path.join(__dirname, 'data/a/c.6e97644177df44ed0d7d0f15dd7e17d4.out.css')))
+				expect(fs.existsSync(path.join(__dirname, 'data/a/c.dd62aed2915e5681a448abc41eca5c55.out.css')))
 					.to.be.false
 				expect(fs.existsSync(path.join(__dirname, 'data/b/d.a6deef4497cce70a5aeaefca0e490c03.out.css')))
 					.to.be.false
@@ -108,10 +108,10 @@ describe('integration/api.css.js', function() {
 				minifier.minify(input, { template: template })
 			})
 			afterEach(function() {
-				safeDelete(path.join(__dirname, 'data/template.2114535984263334c976e35e7455cc06.out.css'))
+				safeDelete(path.join(__dirname, 'data/template.038f892b193cbb3da530fa76d82789d3.out.css'))
 			})
 			it('should create the file correctly', function() {
-				expect(fs.existsSync(path.join(__dirname, 'data/template.2114535984263334c976e35e7455cc06.out.css')))
+				expect(fs.existsSync(path.join(__dirname, 'data/template.038f892b193cbb3da530fa76d82789d3.out.css')))
 					.to.be.true
 			})
 			describe('and the `clean` option', function() {

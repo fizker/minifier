@@ -6,7 +6,7 @@ var uglify = require('uglify-js')
 var stripUTF8ByteOrder = require('./utils').stripUTF8ByteOrder
 var generateOutput = require('./utils').generateOutputName
 var glob = require('glob')
-var cssParser = require('./css')
+var cssParser = require('css-resolve-import')
 
 var EventEmitter = require('events').EventEmitter
 var obj = new EventEmitter()
@@ -119,7 +119,7 @@ function minify(input, options) {
 		var inDir = path.dirname(input)
 		var outDir = path.dirname(output || input)
 		var root = path.join(inDir, path.relative(inDir, outDir))
-		var min = cssParser.parse(input, root, function(max) {
+		var min = cssParser(input, root, function(max) {
 			var max = stripUTF8ByteOrder(max)
 			var comment = firstComment(max)
 			var min = sqwish.minify(max, false)

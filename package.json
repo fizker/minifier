@@ -11,7 +11,8 @@
   }
 , "bugs": "https://github.com/fizker/minifier/issues"
 , "dependencies":
-  { "sqwish": "~0.2.2"
+  { "css-resolve-import": "~0.0.1"
+  , "sqwish": "~0.2.2"
   , "uglify-js": "~2.4.13"
   , "commander": "~1.3.2"
   , "glob": "~3.2.9"
