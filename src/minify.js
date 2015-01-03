@@ -1,5 +1,6 @@
 var fs = require('fs')
 var path = require('path')
+var fmerge = require('fmerge')
 var format = require('util').format
 var sqwish = require('sqwish')
 var uglify = require('uglify-js')
@@ -17,7 +18,8 @@ obj.generateOutputName = generateOutput
 module.exports = obj
 
 function minify(input, options) {
-	if(!options) options = {}
+	options = fmerge({}, options)
+
 	var output
 	var template
 
