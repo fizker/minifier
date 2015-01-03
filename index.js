@@ -37,6 +37,11 @@ if(require.main === module) {
 		console.log(msg)
 		process.exit(1)
 	})
+	program.uglify = {
+		output: {
+			semicolons:false,
+		},
+	}
 	minifier.minify(input, program)
 
 	if(program.cleanOnly) {

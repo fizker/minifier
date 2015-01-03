@@ -106,7 +106,7 @@ function minify(input, options) {
 	function js(input) {
 		var max = fs.readFileSync(input, 'utf8')
 		var comment = firstComment(max)
-		var min = uglify.minify(max, { fromString: true }).code
+		var min = uglify.minify(max, fmerge(options.uglify, { fromString: true })).code
 		var opts = { content: min, template: template }
 		var renderedOutput = output || generateOutput(input, opts)
 

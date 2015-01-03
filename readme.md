@@ -88,6 +88,11 @@ The options-dictionary takes the same parameters as the command-line variant:
 - cleanOnly: A bool for whether to run with `clean` option and then exiting
   before minifying any files.
 
+There are one important additional option: `uglify`. This will be passed on to
+uglify, so that the minification can be controlled. See the
+[uglify documentation](https://github.com/mishoo/UglifyJS2#the-simple-way)
+for more details (the `uglify.minify(path, opts)` function is used internally).
+
 -----
 
 The method for building the output name from the template is exposed for
@@ -132,7 +137,7 @@ In no particular order:
 
 - [duckduckgo](http://duckduckgo.com) for the image used by the manual tests.
 - [sqwish](https://github.com/ded/sqwish) for minifying CSS files.
-- [uglify-js](https://github.com/mishoo/UglifyJS) for minifying JS files.
+- [uglify-js](https://github.com/mishoo/UglifyJS2) for minifying JS files.
 - [commander](https://github.com/visionmedia/commander.js) for command-line
   interaction.
 - [mocha](https://github.com/visionmedia/mocha) and [chai](http://chaijs.com)
