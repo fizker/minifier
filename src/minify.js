@@ -23,7 +23,7 @@ function minify(input, options) {
 	var output
 	var template
 
-	if(!input) {
+	if(!input || (Array.isArray(input) && input.length == 0)) {
 		obj.emit('error', new Error('The input is required'))
 	}
 
@@ -41,7 +41,7 @@ function minify(input, options) {
 		)
 	}
 
-	if(fs.statSync(input).isDirectory()) {
+	if(!Array.isArray(input) && fs.statSync(input).isDirectory()) {
 		if(output) {
 			return obj.emit('error',
 				new Error('You cannot use `output` option against a directory'))
@@ -84,31 +84,40 @@ function minify(input, options) {
 	handleInput(input)
 
 	function handleInput(input) {
-		if(!/\.(js|css)$/.test(input)) {
-			obj.emit(
-				  'error'
-				, new Error(format(
-				    'Please reference a file with the extension .js or .css. You referenced <%s>'
-				  , input
-				  ))
-				)
+		var inputs = Array.isArray(input) ? input : [input]
+		var extensionRegex = /(\.js|css)$/
+
+		var usedExtensions = inputs
+			.map(function(i) { return i.match(extensionRegex) })
+			.filter(function(i) { return i != null })
+			.map(function(i) { return i[1] })
+			.filter(function(ext, idx, arr) { return arr.indexOf(ext) == idx })
+
+		if(usedExtensions.length > 1) {
+			obj.emit('error', new Error('Please only use one type of extension per run'))
+			return false
+		} else if(usedExtensions.length == 0 || usedExtensions[0].match(extensionRegex) == null) {
+			obj.emit('error', new Error('Please reference files with the extension as either .js or .css'))
 			return false
 		}
 
-		if(/\.js$/.test(input)) {
-			js(input)
+		if(/\.js$/.test(inputs[0])) {
+			js(inputs)
 		} else {
-			css(input)
+			css(inputs[0])
 		}
 		return true
 	}
 
-	function js(input) {
-		var max = fs.readFileSync(input, 'utf8')
+	function js(inputs) {
+		var max = inputs.map(function(input) {
+			return stripUTF8ByteOrder(fs.readFileSync(input, 'utf8'))
+		}).join(';\n')
+
 		var comment = firstComment(max)
 		var min = uglify.minify(max, fmerge(options.uglify, { fromString: true })).code
 		var opts = { content: min, template: template }
-		var renderedOutput = output || generateOutput(input, opts)
+		var renderedOutput = output || generateOutput(inputs[0], opts)
 
 		if(comment) {
 			min = comment +'\n' + min

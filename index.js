@@ -2,7 +2,6 @@
 
 var program = require('commander')
 var minifier = require('./src/minify')
-var input
 
 if(require.main === module) {
 	var skip = []
@@ -14,7 +13,7 @@ if(require.main === module) {
 		.option('-C, --clean-only', 'Same as `--clean`, but without minifying the files afterwards')
 		.option('-s, --skip <path-component>', 'Skip any files that contains this in the path')
 		.option('--no-comments', 'Remove license-style comments')
-		.usage('[--output file] path/to/input')
+		.usage('[--output file] path/to/input [...path/to/other/input]')
 
 		.on('skip', function(path) {
 			skip.push(path)
@@ -22,9 +21,13 @@ if(require.main === module) {
 
 		.parse(process.argv)
 
-	input = program.args[0]
+	var inputs = program.args
+	var input
+	if(inputs.length == 1) {
+		input = inputs[0]
+	}
 
-	if(!input) {
+	if(inputs.length == 0) {
 		program.parse(['bla', 'bla', '--help'])
 		process.exit()
 	}
@@ -42,7 +45,7 @@ if(require.main === module) {
 			semicolons:false,
 		},
 	}
-	minifier.minify(input, program)
+	minifier.minify(input || inputs, program)
 
 	if(program.cleanOnly) {
 		return console.log('Minified files cleaned')
