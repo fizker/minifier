@@ -13,12 +13,12 @@
   "bugs": "https://github.com/fizker/minifier/issues",
   "dependencies": {
     "commander": "^2.8.1",
-    "css-resolve-import": "^0.1.0",
+    "css-resolve-import": "^0.1.1",
     "fmerge": "^1.2.0",
-    "glob": "^5.0.10",
+    "glob": "^5.0.14",
     "hogan.js": "^3.0.2",
     "sqwish": "~0.2.2",
-    "uglify-js": "^2.4.23"
+    "uglify-js": "^2.4.24"
   },
   "bin": {
     "minify": "index.js"
@@ -27,7 +27,7 @@
     "test": "mocha"
   },
   "devDependencies": {
-    "chai": "^3.0.0",
+    "chai": "^3.2.0",
     "finc-chai-helpers": "~0.1.0",
     "fzkes": "^0.14.1",
     "mocha": "^2.2.5"
