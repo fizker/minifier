@@ -116,6 +116,17 @@ syntax: Simply add `glob: true` or `regex: true` to the options array:
 `glob` will return a string for passing to a `glob` function, whereas `regex`
 will return a `RegExp` instance for manual comparison.
 
+
+Concatenating multiple javascript files
+---------------------------------------
+
+It is possible to concatenate multiple javascript files into a single, minified file.
+
+Simply pass multiple in via the CLI interface, or pass an array to the API.
+
+They will have the same order as the input-parameter.
+
+
 Running the tests
 -----------------
 
