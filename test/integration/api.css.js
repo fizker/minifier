@@ -147,6 +147,83 @@ describe('integration/api.css.js', function() {
 			})
 		})
 	})
+	describe('When calling the api on a list of files', function() {
+		const inputs = ['a/c', 'b'].map(x => path.join(__dirname, `data/${x}.css`))
+		const output = path.join(__dirname, 'output.css')
+		beforeEach(function() {
+			minifier.minify(inputs, { output: output })
+		})
+		afterEach(function() {
+			safeDelete(output)
+		})
+
+		it('should create the minified file', function() {
+			expect(fs.existsSync(output)).to.be.ok
+		})
+		it('should reformat the url correctly', function() {
+			var contents = fs.readFileSync(output, 'utf8')
+			expect(contents).to.match(/\.nested-img[^}]+gfx\/img\.png/)
+		})
+		it('should import all files', function() {
+			var contents = fs.readFileSync(output, 'utf8')
+			expect(contents)
+				.to.contain('.b-file')
+				.and.to.contain('.c-file')
+				.and.to.contain('.d-file')
+		})
+		describe('with the `cleanOnly` option set', function() {
+			beforeEach(function() {
+				minifier.minify(inputs, { output: output, cleanOnly: true })
+			})
+			it('should remove the file', function() {
+				expect(fs.existsSync(output)).to.be.false
+			})
+		})
+		describe('with the `template` option set', function() {
+			const template = 'template.{{md5}}.out.{{ext}}'
+			const firstOutput = path.join(__dirname, 'data/a/template.12b85ef074fe41219f76245edb7356dd.out.css')
+			beforeEach(function() {
+				minifier.minify(inputs, { template: template })
+			})
+			afterEach(function() {
+				safeDelete(firstOutput)
+			})
+			it('should create the file correctly', function() {
+				expect(fs.existsSync(firstOutput))
+					.to.be.true
+			})
+			describe('and the `clean` option', function() {
+				var oldContent
+				const secondOutput = path.join(__dirname, 'data/a/template.7604bf954520a32bd1fc568762ab9e95.out.css')
+				beforeEach(function() {
+					oldContent = fs.readFileSync(inputs[0])
+					fs.writeFileSync(inputs[0], 'abc{}')
+					minifier.minify(inputs, { template: template, clean: true })
+				})
+				afterEach(function() {
+					fs.writeFileSync(inputs[0], oldContent)
+					safeDelete(secondOutput)
+				})
+				it('should delete the old file', function() {
+					expect(fs.existsSync(firstOutput))
+						.to.be.false
+				})
+				it('should create the new file', function() {
+					expect(fs.existsSync(secondOutput))
+						.to.be.true
+				})
+			})
+			describe('and the `cleanOnly` option', function() {
+				beforeEach(function() {
+					minifier.minify(inputs, { template: template, cleanOnly: true })
+				})
+				it('should clean, but not create the file', function() {
+					expect(fs.existsSync(firstOutput))
+						.to.be.false
+				})
+			})
+		})
+	})
 
 	function safeDelete(file) {
 		fs.existsSync(file) && fs.unlinkSync(file)
