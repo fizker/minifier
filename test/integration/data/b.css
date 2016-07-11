@@ -3,4 +3,6 @@ div {
 	width: 202px;
 }
 
-.b-file {}
+.b-file {
+	background: url(b-file);
+}

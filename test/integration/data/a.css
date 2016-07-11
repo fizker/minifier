@@ -5,4 +5,6 @@
 	background: url(../gfx/img.png);
 }
 
-.a-file {}
+.a-file {
+	background: url(a-file);
+}

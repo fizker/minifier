@@ -2,4 +2,6 @@
 	background: url(../../gfx/img.png);
 }
 
-.d-file {}
+.d-file {
+	background: url(d-file);
+}

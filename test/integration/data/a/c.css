@@ -1,3 +1,5 @@
 @import url(../b/d.css);
 
-.c-file {}
+.c-file {
+	background: url(c-file);
+}
