@@ -64,14 +64,16 @@ function minify(input, options) {
 				})
 			})
 		}
-		files.every(handleInput)
+		files.every(x => handleInputs([x]))
 
 		return
 	}
 
+	var inputs = Array.isArray(input) ? input : [input]
+
 	if(options.clean) {
 		if(template) {
-			clean(path.dirname(input), template)
+			clean(path.dirname(inputs[0]), template)
 		} else if(fs.existsSync(output)) {
 			fs.unlinkSync(output)
 		}
@@ -81,10 +83,9 @@ function minify(input, options) {
 		return
 	}
 
-	handleInput(input)
+	handleInputs(inputs)
 
-	function handleInput(input) {
-		var inputs = Array.isArray(input) ? input : [input]
+	function handleInputs(inputs) {
 		var extensionRegex = /(\.js|css)$/
 
 		var usedExtensions = inputs
@@ -101,10 +102,13 @@ function minify(input, options) {
 			return false
 		}
 
-		if(/\.js$/.test(inputs[0])) {
-			js(inputs)
-		} else {
-			css(inputs[0])
+		var jsFiles = inputs.filter(x => x.endsWith('.js'))
+		var cssFiles = inputs.filter(x => x.endsWith('.css'))
+		if(jsFiles.length > 0) {
+			js(jsFiles)
+		}
+		if(cssFiles.length > 0) {
+			css(cssFiles)
 		}
 		return true
 	}
@@ -126,11 +130,11 @@ function minify(input, options) {
 		fs.writeFileSync(renderedOutput, min)
 	}
 
-	function css(input) {
-		var inDir = path.dirname(input)
-		var outDir = path.dirname(output || input)
+	function css(inputs) {
+		var inDir = path.dirname(inputs[0])
+		var outDir = path.dirname(output || inputs[0])
 		var root = path.join(inDir, path.relative(inDir, outDir))
-		var min = cssParser(input, root, function(max) {
+		var min = inputs.map(input => cssParser(input, root, function(max) {
 			var max = stripUTF8ByteOrder(max)
 			var comment = firstComment(max)
 			var min = sqwish.minify(max, false)
@@ -140,9 +144,9 @@ function minify(input, options) {
 			}
 
 			return min
-		})
+		})).join('\n')
 		var opts = { content: min, template: template }
-		var renderedOutput = output || generateOutput(input, opts)
+		var renderedOutput = output || generateOutput(inputs[0], opts)
 
 		fs.writeFileSync(renderedOutput, min)
 	}
