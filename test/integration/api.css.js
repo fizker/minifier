@@ -4,8 +4,8 @@ describe('integration/api.css.js', function() {
 	var path = require('path')
 
 	describe('When calling the api on a folder', function() {
-		var input = path.join(__dirname, 'data')
-		var template = '{{filename}}.{{md5}}.out.{{ext}}'
+		const input = path.join(__dirname, 'data')
+		const template = '{{filename}}.{{md5}}.out.{{ext}}'
 
 		beforeEach(function() {
 			minifier.minify(input, { template: template })
@@ -70,8 +70,8 @@ describe('integration/api.css.js', function() {
 		})
 	})
 	describe('When calling the api on a single file', function() {
-		var input = path.join(__dirname, 'data/a.css')
-		var output = path.join(__dirname, 'a.output.css')
+		const input = path.join(__dirname, 'data/a.css')
+		const output = path.join(__dirname, 'a.output.css')
 		beforeEach(function() {
 			minifier.minify(input, { output: output })
 		})
@@ -103,19 +103,21 @@ describe('integration/api.css.js', function() {
 			})
 		})
 		describe('with the `template` option set', function() {
-			var template = 'template.{{md5}}.out.{{ext}}'
+			const template = 'template.{{md5}}.out.{{ext}}'
+			const firstOutput = path.join(__dirname, 'data/template.038f892b193cbb3da530fa76d82789d3.out.css')
 			beforeEach(function() {
 				minifier.minify(input, { template: template })
 			})
 			afterEach(function() {
-				safeDelete(path.join(__dirname, 'data/template.038f892b193cbb3da530fa76d82789d3.out.css'))
+				safeDelete(firstOutput)
 			})
 			it('should create the file correctly', function() {
-				expect(fs.existsSync(path.join(__dirname, 'data/template.038f892b193cbb3da530fa76d82789d3.out.css')))
+				expect(fs.existsSync(firstOutput))
 					.to.be.true
 			})
 			describe('and the `clean` option', function() {
 				var oldContent
+				const secondOutput = path.join(__dirname, 'data/template.34c67064c3f76ca1f5798ad0fd1f8f98.out.css')
 				beforeEach(function() {
 					oldContent = fs.readFileSync(input)
 					fs.writeFileSync(input, 'abc{}')
@@ -123,14 +125,14 @@ describe('integration/api.css.js', function() {
 				})
 				afterEach(function() {
 					fs.writeFileSync(input, oldContent)
-					safeDelete(path.join(__dirname, 'data/template.34c67064c3f76ca1f5798ad0fd1f8f98.out.css'))
+					safeDelete(secondOutput)
 				})
 				it('should delete the old file', function() {
-					expect(fs.existsSync(path.join(__dirname, 'data/template.2114535984263334c976e35e7455cc06.out.css')))
+					expect(fs.existsSync(firstOutput))
 						.to.be.false
 				})
 				it('should create the new file', function() {
-					expect(fs.existsSync(path.join(__dirname, 'data/template.34c67064c3f76ca1f5798ad0fd1f8f98.out.css')))
+					expect(fs.existsSync(secondOutput))
 						.to.be.true
 				})
 			})
@@ -139,7 +141,7 @@ describe('integration/api.css.js', function() {
 					minifier.minify(input, { template: template, cleanOnly: true })
 				})
 				it('should clean, but not create the file', function() {
-					expect(fs.existsSync(path.join(__dirname, 'data/template.2114535984263334c976e35e7455cc06.out.css')))
+					expect(fs.existsSync(firstOutput))
 						.to.be.false
 				})
 			})
