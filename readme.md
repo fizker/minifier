@@ -7,7 +7,7 @@ Feature highlights
 ------------------
 
 - It minifies JS and CSS
-- It reworks URLs in CSS from the original location to the output location.
+- URLs in CSS are updated relative to the output location
 - It automatically resolves `@import` statements in CSS.
 
 
@@ -126,6 +126,31 @@ Simply pass multiple in via the CLI interface, or pass an array to the API.
 
 They will have the same order as the input-parameter.
 
+CSS URL Rewrites
+----------------
+
+Any URLs that are found in CSS files, are automatically updated relative to the output destination. An example is shown below:
+
+```
+- styles.css
+- dist/
+  - styles.min.css
+- lib/
+  - backgrond.jpg
+
+
+styles.css
+
+.background {
+  background-image: url("lib/background.jpg");
+}
+
+styles.min.css
+
+.background {
+  background-image: url("../lib/background.jpg");
+}
+```
 
 Running the tests
 -----------------
