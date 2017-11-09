@@ -1,3 +1,20 @@
+This project should be considered deprecated
+--------------------------------------------
+
+This should be considered deprecated. I simply have neither the time or interest
+in keeping it up-to-date.
+
+For alternatives, consider [less](http://lesscss.org) or [sass](http://sass-lang.com/guide)
+for the CSS part. I prefer less because it is more lightweight, but both are good
+options and serve much of the same purpose.
+
+For JS, you can either use [uglify](https://github.com/mishoo/UglifyJS2) directly
+(this project is already just a thin wrapper around uglify). Alternatively, look
+to bundlers like [webpack](https://webpack.js.org), but there are tons of
+different ones.
+
+---
+
 minifier
 ========
 
